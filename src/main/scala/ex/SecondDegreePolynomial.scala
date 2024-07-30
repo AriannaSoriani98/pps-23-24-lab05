@@ -1,5 +1,7 @@
 package ex
 
+import org.junit.Assert.assertEquals
+
 import scala.annotation.targetName
 
 // Express a second degree polynomial
@@ -13,10 +15,35 @@ trait SecondDegreePolynomial:
 
 
 object SecondDegreePolynomial:
-  def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial = ??? // Fill here
+  def apply(secondDegree: Double, firstDegree: Double, constant: Double): SecondDegreePolynomial = new
+    SecondDegreePolynomialImpl(secondDegree,firstDegree, constant)
+/* dentro:
+private class SecondDegreePolynomialImpl(override val secondDegree:Double,
+  override val firstDegree: Double, override val constant: Double) extends SecondDegreePolynomial:
+  override def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial = new
+    SecondDegreePolynomialImpl(this.secondDegree + polynomial.secondDegree, this.firstDegree + polynomial.firstDegree, this.constant + polynomial.constant)
+  override def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial = new
+    SecondDegreePolynomialImpl(this.secondDegree - polynomial.secondDegree, this.firstDegree - polynomial.firstDegree, this.constant - polynomial.constant)
+*/
+/*equality and toString do not work*/
+
+/*fuori: */
+
+private case class SecondDegreePolynomialImpl(override val secondDegree:Double,
+                                                override val firstDegree: Double, override val constant: Double) extends SecondDegreePolynomial:
+  override def +(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
+    SecondDegreePolynomialImpl(this.secondDegree + polynomial.secondDegree, this.firstDegree + polynomial.firstDegree, this.constant + polynomial.constant)
+
+  override def -(polynomial: SecondDegreePolynomial): SecondDegreePolynomial =
+    SecondDegreePolynomialImpl(this.secondDegree - polynomial.secondDegree, this.firstDegree - polynomial.firstDegree, this.constant - polynomial.constant)
+
+
 
 @main def checkComplex(): Unit =
   val simplePolynomial = SecondDegreePolynomial(1.0, 0, 3)
+  val simplePolynomialEq = SecondDegreePolynomial(1.0, 0, 3)
+  assertEquals(simplePolynomial,simplePolynomialEq) //Equals work
+  println(simplePolynomialEq.toString) //toString work
   val anotherPolynomial = SecondDegreePolynomial(0.0, 1, 0.0)
   val fullPolynomial = SecondDegreePolynomial(3.0, 2.0, 5.0)
   val sum = simplePolynomial + anotherPolynomial
